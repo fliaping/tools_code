@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+
+	<!-- redis -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="100" />
+        <property name="maxIdle" value="20" />
+        <property name="timeBetweenEvictionRunsMillis" value="30000" />
+        <property name="minEvictableIdleTimeMillis" value="30000" />
+        <property name="testOnBorrow" value="false" />
+    </bean>
+	<bean id="shardedJedisConnectionPool" class="com.dianwoba.core.redis.connection.ShardedJedisSentinelPool">
+	    <constructor-arg index="0"> 
+	        <value>${redis.sharded.masternames}</value>
+	    </constructor-arg>  
+        <constructor-arg index="1">
+            <set>
+			   <value>${redis.sentinel1.host}</value>
+			   <value>${redis.sentinel2.host}</value>
+			   <value>${redis.sentinel3.host}</value>
+			</set>
+         </constructor-arg>
+        <constructor-arg index="2" ref="jedisPoolConfig"/>
+        <constructor-arg index="3" value="15000"/> 
+        <constructor-arg index="4" >
+           <value>${redis.sharded.password}</value>
+        </constructor-arg> 
+	</bean>
+	
+	<bean id="jacksonJedisTemplate" class="com.dianwoba.core.redis.JedisTemplate">
+		<property name="jedisPool" ref="shardedJedisConnectionPool"></property>
+		<property name="keySerializer">
+			<bean class="com.dianwoba.core.redis.serializer.StringRedisSerializer"/>
+		</property>
+		<property name="valueSerializer">
+			<bean class="com.dianwoba.core.redis.serializer.JsonRedisSerializer">
+			   <constructor-arg value="java.lang.Object"/>
+			</bean>
+		</property>
+		<property name="hashKeySerializer">
+			<bean class="com.dianwoba.core.redis.serializer.StringRedisSerializer"/>
+		</property>
+		<property name="hashValueSerializer">
+			<bean class="com.dianwoba.core.redis.serializer.JsonRedisSerializer">
+			   <constructor-arg value="java.lang.Object"/>
+			</bean>
+		</property>
+	</bean>
+	<bean id="stringJedisTemplate" class="com.dianwoba.core.redis.JedisTemplate">
+		<property name="jedisPool" ref="shardedJedisConnectionPool"></property>
+		<property name="keySerializer">
+			<bean class="com.dianwoba.core.redis.serializer.StringRedisSerializer"/>
+		</property>
+		<property name="valueSerializer">
+			<bean class="com.dianwoba.core.redis.serializer.StringRedisSerializer"/>
+		</property>
+		<property name="hashKeySerializer">
+			<bean class="com.dianwoba.core.redis.serializer.StringRedisSerializer"/>
+		</property>
+		<property name="hashValueSerializer">
+			<bean class="com.dianwoba.core.redis.serializer.StringRedisSerializer"/>
+		</property>
+	</bean>
+	<bean id="jdkSerializationJedisTemplate" class="com.dianwoba.core.redis.JedisTemplate">
+		<property name="jedisPool" ref="shardedJedisConnectionPool"></property>
+		<property name="keySerializer">
+			<bean class="com.dianwoba.core.redis.serializer.StringRedisSerializer"/>
+		</property>
+		<property name="valueSerializer">
+			<bean class="com.dianwoba.core.redis.serializer.JdkSerializationRedisSerializer"/>
+		</property>
+		<property name="hashKeySerializer">
+			<bean class="com.dianwoba.core.redis.serializer.StringRedisSerializer"/>
+		</property>
+		<property name="hashValueSerializer">
+			<bean class="com.dianwoba.core.redis.serializer.JdkSerializationRedisSerializer"/>
+		</property>
+	</bean>
+	
+	<bean id="shardedCacheService" class="com.dianwoba.core.cache.ShardedCacheService">
+		<property name="jedisTemplate" ref="jacksonJedisTemplate" />
+	</bean>
+	
+	<bean id="jdkSerializationShardedCacheService" class="com.dianwoba.core.cache.ShardedCacheService">
+		<property name="jedisTemplate" ref="jdkSerializationJedisTemplate" />
+	</bean>
+	
+</beans>

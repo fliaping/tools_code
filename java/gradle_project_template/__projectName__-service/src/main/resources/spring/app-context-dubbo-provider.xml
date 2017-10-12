@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd 
+        http://code.alibabatech.com/schema/dubbo 
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- consumer application name -->
+	<dubbo:application name="template-service" />
+	<dubbo:registry address="${dubbo.registry.address}" />
+	<dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" accesslog="true" threads="${dubbo.threads}"/>
+	<dubbo:provider filter="-exception" />
+
+	<dubbo:monitor protocol="registry" />
+
+
+	<dubbo:service ref="testProviderImpl" interface="@group@.@projectName@.provider.TestProvider" timeout="10000" retries="0" version="1.0.0"/>
+</beans>

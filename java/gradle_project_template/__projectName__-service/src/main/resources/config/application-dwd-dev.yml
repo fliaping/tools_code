@@ -1,0 +1,42 @@
+environment: dev
+
+dubbo:
+  registry:
+    address: zookeeper://192.168.11.29:2181
+  threads: 500
+redis:
+  master:
+    name: master-dev
+  password: wIvJt@_redis
+  sentinal:
+    node1:
+      host: 192.168.11.29
+      port: 26001
+    node2:
+      host: 192.168.11.32
+      port: 26001
+    node3:
+      host: 192.168.11.20
+      port: 26001
+
+  sharded:
+    masternames: sharddev6369
+    password: wIvJt@_redis
+  sentinel1:
+    host: 192.168.11.29:26001
+  sentinel2:
+    host: 192.168.11.32:26001
+  sentinel3:
+    host: 192.168.11.20:26001
+
+api:
+  redis:
+    sharded:
+      masternames: sharddev6369
+      password: wIvJt@_redis
+    sentinel1:
+      host: 192.168.11.29:26001
+    sentinel2:
+      host: 192.168.11.32:26001
+    sentinel3:
+      host: 192.168.11.20:26001

@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      profile: dwd-dev
+      label: master
+    consul:
+      host: 192.168.11.29
+      port: 8500
+    stream:
+      kafka:
+        binder:
+          zk-nodes: 192.168.11.30:2181,192.168.11.33:2181,192.168.11.35:2181
+          brokers: 192.168.11.30:9092,192.168.11.33:9092,192.168.11.35:9092

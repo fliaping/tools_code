@@ -1,0 +1,5 @@
+server:
+  port: 80
+dubbo:
+  protocol:
+    port: 2000

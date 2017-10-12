@@ -1,0 +1,20 @@
+apply plugin: "org.springframework.boot"
+
+dependencies {
+    compile project(":@projectName@-api")
+    compile project(":@projectName@-mapper")
+    compile "com.dianwoba.cloud:spring-boot-starter-cloud:1.0.1"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-data-redis"
+    compile "org.springframework.boot:spring-boot-starter-log4j2"
+    compile ("com.alibaba:dubbo:2.5.3") {
+        exclude module: "spring"
+    }
+    compile "com.101tec:zkclient:0.10"
+    compile ("com.dianwoba.monitor:monitor-client:2.1.0-SNAPSHOT") {
+        exclude module: "dubbo"
+    }
+    compile "com.dianwoba:dianwoba-core:2.2.5"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+}

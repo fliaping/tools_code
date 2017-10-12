@@ -1,0 +1,66 @@
+buildscript {
+    ext {
+        springBootVersion = "1.5.7.RELEASE"
+    }
+
+    repositories {
+        mavenLocal()
+        maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public"
+        }
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+allprojects {
+    group "com.dianwoda"
+    version "1.0-SNAPSHOT"
+}
+
+subprojects {
+    apply plugin: "java"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenLocal()
+
+        if (project.hasProperty("env") &&
+                (project['env'] == "dwd-qa1" || project['env'] == "dwd-qa2" || project['env'] == "production")) {
+            maven { url "http://60.191.68.43:8081/nexus/content/repositories/releases" }
+            maven { url "http://60.191.68.43:8081/nexus/content/repositories/snapshots" }
+            maven { url "http://60.191.68.43:8081/nexus/content/repositories/thirdparty" }
+            maven { url "http://60.191.68.43:8081/nexus/content/repositories/central" }
+
+        } else {
+            maven { url "http://192.168.1.177:8081/nexus/content/repositories/releases" }
+            maven { url "http://192.168.1.177:8081/nexus/content/repositories/snapshots" }
+            maven { url "http://192.168.1.177:8081/nexus/content/repositories/thirdparty" }
+            maven { url "http://192.168.1.177:8081/nexus/content/repositories/central" }
+        }
+
+        maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public"
+        }
+    }
+
+    dependencies {
+        compile "org.projectlombok:lombok:1.16.10"
+    }
+
+    configurations {
+        all*.exclude module: "spring-boot-starter-logging"
+        all*.exclude module: "slf4j-log4j12"
+    }
+
+    task createDirs {
+        doLast {
+            sourceSets*.java.srcDirs*.each { it.mkdirs() }
+            sourceSets*.resources.srcDirs*.each { it.mkdirs()}
+        }
+    }
+}

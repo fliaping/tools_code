@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: map-service
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
+        query-passing: true
+    config:
+      discovery:
+        enabled: true
+        service-id: config-server
+      fail-fast: true
+health:
+  config:
+    enabled: false
+management:
+  health:
+    solr:
+      enabled: false

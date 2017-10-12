@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      profile: dwd-qa
+      label: master
+    consul:
+      host: 10.0.0.10
+      port: 8500
+    stream:
+      kafka:
+        binder:
+          zk-nodes: 10.0.0.4:2181,10.0.0.8:2181,10.0.0.13:2181
+          brokers: 10.0.0.4:9092,10.0.0.8:9092,10.0.0.13:9092

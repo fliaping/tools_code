@@ -1,0 +1,6 @@
+rootProject.name = '@projectName@'
+include '@projectName@-api'
+include '@projectName@-service'
+include '@projectName@-mapper'
+include '@projectName@-client'
+

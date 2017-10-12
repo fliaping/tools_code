@@ -1,0 +1,42 @@
+environment: production
+
+dubbo:
+  registry:
+    address: zookeeper://172.24.0.6:2181?backup=172.24.0.7:2181,172.24.0.8:2181
+  threads: 500
+redis:
+  master:
+    name: dwd6379
+  password: diw0d@_redis
+  sentinal:
+    node1:
+      host: 172.24.0.6
+      port: 26001
+    node2:
+      host: 172.24.0.7
+      port: 26001
+    node3:
+      host: 172.24.0.8
+      port: 26001
+
+  sharded:
+    masternames: sharddwd6002,sharddwd6003,sharddwd6004,sharddwd6005,sharddwd6006,sharddwd6007,sharddwd6008,sharddwd6009
+    password: 1d3ecc5a17321c73
+  sentinel1:
+    host: 172.24.0.7:26001
+  sentinel2:
+    host: 172.24.0.6:26001
+  sentinel3:
+    host: 172.24.0.8:26001
+
+api:
+  redis:
+    sharded:
+      masternames: shard01,shard02,shard03,shard04
+      password: wIvJt@_redis
+    sentinel1:
+      host: 172.24.0.7:26001
+    sentinel2:
+      host: 172.24.0.6:26001
+    sentinel3:
+      host: 172.24.0.8:26001

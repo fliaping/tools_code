@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      profile: dwd-qa2
+      label: master
+    consul:
+      host: 172.24.80.83
+      port: 8510
+    stream:
+      kafka:
+        binder:
+          zk-nodes: 172.24.80.87:2181,172.24.80.88:2181,172.24.80.89:2181
+          brokers: 172.24.80.87:9092,172.24.80.88:9092,172.24.80.89:9092

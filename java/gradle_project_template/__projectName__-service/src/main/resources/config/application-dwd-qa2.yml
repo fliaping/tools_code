@@ -1,0 +1,42 @@
+environment: qa2
+
+dubbo:
+  registry:
+    address: zookeeper://172.24.80.83:2181?backup=172.24.80.84:2181,172.24.80.85:2181
+  threads: 500
+redis:
+  master:
+    name: master-qa
+  password: H5DUg@_redis
+  sentinal:
+    node1:
+      host: 172.24.80.83
+      port: 26001
+    node2:
+      host: 172.24.80.84
+      port: 26001
+    node3:
+      host: 172.24.80.85
+      port: 26001
+
+  sharded:
+    masternames: shardqa6369
+    password: H5DUg@_redis
+  sentinel1:
+    host: 172.24.80.83:26001
+  sentinel2:
+    host: 172.24.80.84:26001
+  sentinel3:
+    host: 172.24.80.85:26001
+
+api:
+  redis:
+    sharded:
+      masternames: shardqa6369
+      password: H5DUg@_redis
+    sentinel1:
+      host: 172.24.80.83:26001
+    sentinel2:
+      host: 172.24.80.84:26001
+    sentinel3:
+      host: 172.24.80.85:26001
